@@ -80,7 +80,8 @@ class SysfsGPIO(GPIO):
             # export as application of udev rules after export is asynchronous.
             for i in range(SysfsGPIO._GPIO_STAT_RETRIES):
                 try:
-                    with open(os.path.join(gpio_path, "direction"), 'w'):
+                    with open(os.path.join(gpio_path, "direction"), 'w')  as f_direction:
+                        f_direction.write(f'{direction.lower()}\n')
                         break
                 except IOError as e:
                     if e.errno != errno.EACCES or (e.errno == errno.EACCES and i == SysfsGPIO._GPIO_STAT_RETRIES - 1):
